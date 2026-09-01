@@ -3,92 +3,521 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ITI Android QR Scanner</title>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<title>ITI Android Camera Test</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f4f6f8;color:#202124}
-.container{max-width:520px;margin:auto;padding:15px}.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:15px;box-shadow:0 2px 8px #00000014}
-h1{margin:0 0 6px;font-size:23px}.subtitle{color:#5f6368;font-size:14px;line-height:1.5}
-#reader{width:100%;min-height:300px;border-radius:12px;overflow:hidden;background:#111}
-button{width:100%;padding:14px;margin-top:12px;border:0;border-radius:11px;font-size:16px;font-weight:bold}
-.primary{background:#1a73e8;color:white}.secondary{background:#e8eaed;color:#202124}
-.status{text-align:center;color:#5f6368;font-size:14px;line-height:1.5;margin-top:10px}
-.error{display:none;background:#fce8e6;color:#b3261e;padding:14px;border-radius:10px;margin-top:15px;line-height:1.5}
-.result{display:none;background:#e6f4ea;color:#137333;padding:14px;border-radius:10px;margin-top:15px;word-break:break-word}
-.test{background:#f8f9fa;padding:12px;border-radius:10px;margin-top:12px;font-size:13px;line-height:1.7}.ok{color:#137333;font-weight:bold}.bad{color:#b3261e;font-weight:bold}
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+  color:#202124;
+}
+
+.container{
+  max-width:520px;
+  margin:auto;
+  padding:15px;
+}
+
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 2px 8px #00000014;
+}
+
+h1{
+  margin:0 0 8px;
+  font-size:23px;
+}
+
+.subtitle{
+  color:#5f6368;
+  font-size:14px;
+  line-height:1.5;
+}
+
+#reader{
+  width:100%;
+  height:320px;
+  border-radius:12px;
+  overflow:hidden;
+  background:#111;
+  object-fit:cover;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border:0;
+  border-radius:11px;
+  font-size:16px;
+  font-weight:bold;
+}
+
+.primary{
+  background:#1a73e8;
+  color:white;
+}
+
+.secondary{
+  background:#e8eaed;
+  color:#202124;
+}
+
+.status{
+  text-align:center;
+  color:#5f6368;
+  font-size:14px;
+  line-height:1.5;
+  margin-top:10px;
+}
+
+.error{
+  display:none;
+  background:#fce8e6;
+  color:#b3261e;
+  padding:14px;
+  border-radius:10px;
+  margin-top:15px;
+  line-height:1.5;
+}
+
+.test{
+  background:#f8f9fa;
+  padding:12px;
+  border-radius:10px;
+  margin-top:12px;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.ok{
+  color:#137333;
+  font-weight:bold;
+}
+
+.bad{
+  color:#b3261e;
+  font-weight:bold;
+}
 </style>
 </head>
+
 <body>
+
 <div class="container">
-<div class="card"><h1>ITI Android QR Scanner</h1>
-<div class="subtitle">Camera-only test for ITI Attendance Monitoring System 2026-27. Attendance is NOT written to the sheet in this test.</div></div>
-<div class="card">
-<video id="reader" autoplay playsinline muted
-       style="width:100%;min-height:300px;border-radius:12px;
-       background:#111;object-fit:cover;"></video>
-<div id="status" class="status">Camera not started.</div>
-<button id="startButton" class="primary" onclick="startScanner()">📷 Start Scanner</button>
-<button id="stopButton" class="secondary" onclick="stopScanner()" style="display:none">Stop Scanner</button>
-<div id="error" class="error"></div><div id="result" class="result"></div>
-<div class="test">
-<div><b>Secure context:</b> <span id="secureTest"></span></div>
-<div><b>Camera API:</b> <span id="cameraTest"></span></div>
-<div><b>Scanner library:</b> <span id="libraryTest"></span></div>
+
+  <div class="card">
+    <h1>ITI Android Camera Test</h1>
+
+    <div class="subtitle">
+      Camera-only test for ITI Attendance Monitoring System 2026-27.
+      QR scanning and attendance are NOT being tested yet.
+    </div>
+  </div>
+
+  <div class="card">
+
+    <video
+      id="reader"
+      autoplay
+      playsinline
+      muted>
+    </video>
+
+    <div id="status" class="status">
+      Camera not started.
+    </div>
+
+    <button
+      id="startButton"
+      class="primary"
+      onclick="startCamera()">
+      📷 Start Camera
+    </button>
+
+    <button
+      id="stopButton"
+      class="secondary"
+      onclick="stopCamera()"
+      style="display:none">
+      Stop Camera
+    </button>
+
+    <div id="error" class="error"></div>
+
+    <div class="test">
+
+      <div>
+        <b>Secure context:</b>
+        <span id="secureTest"></span>
+      </div>
+
+      <div>
+        <b>Camera API:</b>
+        <span id="cameraTest"></span>
+      </div>
+
+      <div>
+        <b>Browser:</b>
+        <span id="browserTest"></span>
+      </div>
+
+      <div>
+        <b>Camera permission:</b>
+        <span id="permissionTest"></span>
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
-</div></div>
+
 <script>
-let scanner=null,scannerRunning=false,scanLocked=false;
-function setStatus(m){document.getElementById("status").textContent=m}
-function showError(m){let x=document.getElementById("error");x.textContent=m;x.style.display="block"}
-function hideError(){let x=document.getElementById("error");x.textContent="";x.style.display="none"}
-function esc(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
-function showResult(m){let x=document.getElementById("result");x.innerHTML="<b>✅ QR DETECTED</b><br><br>"+esc(m);x.style.display="block"}
-function test(id,ok,text){let x=document.getElementById(id);x.textContent=text;x.className=ok?"ok":"bad"}
-function env(){
- test("secureTest",window.isSecureContext,window.isSecureContext?"YES":"NO");
- test("cameraTest",!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia),
-      navigator.mediaDevices&&navigator.mediaDevices.getUserMedia?"AVAILABLE":"NOT AVAILABLE");
- test("libraryTest",typeof Html5Qrcode!=="undefined",typeof Html5Qrcode!=="undefined?"LOADED":"NOT LOADED");
+
+let cameraStream = null;
+
+
+function setStatus(message){
+
+  document.getElementById("status").textContent = message;
+
 }
-async function startScanner(){
- hideError();document.getElementById("result").style.display="none";
- if(scannerRunning)return;
- if(!window.isSecureContext){showError("This page must be opened using HTTPS.");return}
- if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showError("Camera API is not available in this browser.");return}
- if(typeof Html5Qrcode==="undefined"){showError("QR scanner library did not load. Check internet.");return}
- scanLocked=false;setStatus("Requesting Android camera permission...");
- scanner=new Html5Qrcode("reader");
- const config={fps:10,qrbox:function(w,h){let s=Math.floor(Math.min(w,h)*.70);return{width:s,height:s}},aspectRatio:1.0,disableFlip:false};
- try{
-   await scanner.start({facingMode:{exact:"environment"}},config,onScanSuccess,function(){});
-   scannerRunning=true;document.getElementById("startButton").style.display="none";
-   document.getElementById("stopButton").style.display="block";
-   setStatus("✅ Rear camera active. Point at a student QR code.");
- }catch(e){
-   console.error(e);scannerRunning=false;
-   try{await scanner.clear()}catch(x){} scanner=null;
-   let m="Unable to start the camera.";
-   if(e&&e.name==="NotAllowedError")m="Camera permission was denied by the browser. Check Chrome → Site settings → Camera → Allow, then reload.";
-   else if(e&&e.name==="NotFoundError")m="No camera was found on this device.";
-   else if(e&&e.name==="NotReadableError")m="The camera is already being used by another app. Close other camera apps and try again.";
-   else if(e&&e.name==="OverconstrainedError")m="The requested rear camera is not available. We will adjust camera selection next.";
-   else if(e&&e.message)m=e.message;
-   showError(m);setStatus("Camera could not be started.");
- }
+
+
+function showError(message){
+
+  const box = document.getElementById("error");
+
+  box.textContent = message;
+
+  box.style.display = "block";
+
 }
-async function stopScanner(){
- if(!scanner)return;
- try{if(scannerRunning)await scanner.stop()}catch(e){console.warn(e)}
- try{await scanner.clear()}catch(e){console.warn(e)}
- scanner=null;scannerRunning=false;
- document.getElementById("startButton").style.display="block";
- document.getElementById("stopButton").style.display="none";
- setStatus("Camera stopped.");
+
+
+function hideError(){
+
+  const box = document.getElementById("error");
+
+  box.textContent = "";
+
+  box.style.display = "none";
+
 }
-async function onScanSuccess(text){
- if(scanLocked)return;scanLocked=true;showResult(text);setStatus("QR successfully detected.");await stopScanner();
+
+
+function test(id, ok, text){
+
+  const element = document.getElementById(id);
+
+  element.textContent = text;
+
+  element.className = ok ? "ok" : "bad";
+
 }
-env();
+
+
+function runDiagnostics(){
+
+  test(
+    "secureTest",
+    window.isSecureContext,
+    window.isSecureContext ? "YES" : "NO"
+  );
+
+
+  const cameraAvailable =
+    !!(
+      navigator.mediaDevices &&
+      navigator.mediaDevices.getUserMedia
+    );
+
+
+  test(
+    "cameraTest",
+    cameraAvailable,
+    cameraAvailable ? "AVAILABLE" : "NOT AVAILABLE"
+  );
+
+
+  const isChrome =
+    /Chrome/i.test(navigator.userAgent);
+
+
+  test(
+    "browserTest",
+    isChrome,
+    isChrome ? "Chrome detected" : "Other browser"
+  );
+
+
+  if(
+    navigator.permissions &&
+    navigator.permissions.query
+  ){
+
+    navigator.permissions
+      .query({name:"camera"})
+      .then(function(result){
+
+        if(result.state === "granted"){
+
+          test(
+            "permissionTest",
+            true,
+            "GRANTED"
+          );
+
+        }
+        else if(result.state === "prompt"){
+
+          test(
+            "permissionTest",
+            true,
+            "NOT ASKED YET"
+          );
+
+        }
+        else{
+
+          test(
+            "permissionTest",
+            false,
+            "DENIED"
+          );
+
+        }
+
+      })
+      .catch(function(){
+
+        test(
+          "permissionTest",
+          true,
+          "CHECKED DURING START"
+        );
+
+      });
+
+  }
+  else{
+
+    test(
+      "permissionTest",
+      true,
+      "CHECKED DURING START"
+    );
+
+  }
+
+}
+
+
+async function startCamera(){
+
+  hideError();
+
+  if(!window.isSecureContext){
+
+    showError(
+      "HTTPS is required. This page is not running in a secure context."
+    );
+
+    return;
+  }
+
+
+  if(
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ){
+
+    showError(
+      "Camera API is not available in this browser."
+    );
+
+    return;
+  }
+
+
+  setStatus(
+    "Requesting Android camera permission..."
+  );
+
+
+  try{
+
+    cameraStream =
+      await navigator.mediaDevices.getUserMedia({
+
+        video:{
+          facingMode:"environment"
+        },
+
+        audio:false
+
+      });
+
+
+    const video =
+      document.getElementById("reader");
+
+
+    video.srcObject =
+      cameraStream;
+
+
+    await video.play();
+
+
+    document.getElementById(
+      "startButton"
+    ).style.display = "none";
+
+
+    document.getElementById(
+      "stopButton"
+    ).style.display = "block";
+
+
+    test(
+      "permissionTest",
+      true,
+      "GRANTED"
+    );
+
+
+    setStatus(
+      "✅ Android rear camera is ACTIVE."
+    );
+
+  }
+
+  catch(error){
+
+    console.error(
+      "CAMERA ERROR:",
+      error
+    );
+
+
+    let message =
+      "Unable to start the camera.";
+
+
+    if(error.name === "NotAllowedError"){
+
+      message =
+        "Camera permission was denied. " +
+        "Open Chrome → Site settings → Camera → Allow, then reload this page.";
+
+      test(
+        "permissionTest",
+        false,
+        "DENIED"
+      );
+
+    }
+
+    else if(error.name === "NotFoundError"){
+
+      message =
+        "No camera was found on this device.";
+
+    }
+
+    else if(error.name === "NotReadableError"){
+
+      message =
+        "The camera is already being used by another application. Close other camera apps.";
+
+    }
+
+    else if(error.name === "SecurityError"){
+
+      message =
+        "Camera access was blocked by browser security.";
+
+    }
+
+    else if(error.name === "OverconstrainedError"){
+
+      message =
+        "Rear-camera selection failed. We will test automatic camera selection next.";
+
+    }
+
+    else{
+
+      message =
+        error.name + ": " + error.message;
+
+    }
+
+
+    showError(message);
+
+
+    setStatus(
+      "Camera could not be started."
+    );
+
+  }
+
+}
+
+
+function stopCamera(){
+
+  if(cameraStream){
+
+    cameraStream
+      .getTracks()
+      .forEach(function(track){
+
+        track.stop();
+
+      });
+
+    cameraStream = null;
+
+  }
+
+
+  const video =
+    document.getElementById("reader");
+
+
+  video.srcObject = null;
+
+
+  document.getElementById(
+    "startButton"
+  ).style.display = "block";
+
+
+  document.getElementById(
+    "stopButton"
+  ).style.display = "none";
+
+
+  setStatus(
+    "Camera stopped."
+  );
+
+}
+
+
+runDiagnostics();
+
 </script>
+
 </body>
 </html>
