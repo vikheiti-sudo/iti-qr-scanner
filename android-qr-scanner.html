@@ -23,7 +23,9 @@ button{width:100%;padding:14px;margin-top:12px;border:0;border-radius:11px;font-
 <div class="card"><h1>ITI Android QR Scanner</h1>
 <div class="subtitle">Camera-only test for ITI Attendance Monitoring System 2026-27. Attendance is NOT written to the sheet in this test.</div></div>
 <div class="card">
-<div id="reader"></div>
+<video id="reader" autoplay playsinline muted
+       style="width:100%;min-height:300px;border-radius:12px;
+       background:#111;object-fit:cover;"></video>
 <div id="status" class="status">Camera not started.</div>
 <button id="startButton" class="primary" onclick="startScanner()">📷 Start Scanner</button>
 <button id="stopButton" class="secondary" onclick="stopScanner()" style="display:none">Stop Scanner</button>
